@@ -112,7 +112,8 @@ class MycroftSkillsManager(object):
                 listdir(self.skills_dir))]
             for skill_folder in skill_list:
                 skills.append(skill_folder)
-                self.read_skill_folder(skill_folder)
+                if self.is_skill(skill_folder):
+                    self.add_skill_folder(skill_folder)
         LOG.info("scanned: " + str(skills))
         return skills
 
@@ -151,10 +152,10 @@ class MycroftSkillsManager(object):
         if not MainModule + ".py" in listdir(path):
             LOG.warning("not a skill!")
             return False
+        else:
+            return True
 
-    def read_skill_folder(self, skill_folder):
-        if not self.is_skill(skill_folder):
-            return False
+    def add_skill_folder(self, skill_folder):
         path = join(self.skills_dir, skill_folder)
         if skill_folder not in self.skills:
             self.skills[skill_folder] = {"id": hash(path)}
